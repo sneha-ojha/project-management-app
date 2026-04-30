@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <title>Dashboard</title>
+
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- NAVBAR -->
+
+  <nav class="bg-white shadow px-8 py-4 flex justify-between items-center">
+
+<h1
+  id="dashboardTitle"
+  class="text-3xl font-bold text-blue-600"
+>
+  Project Manager
+</h1>
+
+    <div class="flex items-center gap-4">
+
+      <span
+        id="roleBadge"
+        class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full"
+      ></span>
+
+      <button
+        onclick="logout()"
+        class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </nav>
+
+  <div class="p-8">
+
+    <!-- STATS -->
+
+    <div
+      id="statsSection"
+      class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10"
+    >
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-xl font-semibold text-gray-700">
+          Projects
+        </h2>
+
+        <p
+          id="projectCount"
+          class="text-5xl font-bold mt-4 text-blue-500"
+        >
+          0
+        </p>
+
+      </div>
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-xl font-semibold text-gray-700">
+          Tasks
+        </h2>
+
+        <p
+          id="taskCount"
+          class="text-5xl font-bold mt-4 text-green-500"
+        >
+          0
+        </p>
+
+      </div>
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-xl font-semibold text-gray-700">
+          Completed
+        </h2>
+
+        <p
+          id="completedCount"
+          class="text-5xl font-bold mt-4 text-purple-500"
+        >
+          0
+        </p>
+
+      </div>
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-xl font-semibold text-gray-700">
+          Overdue
+        </h2>
+
+        <p
+          id="overdueCount"
+          class="text-5xl font-bold mt-4 text-red-500"
+        >
+          0
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ADMIN FORMS -->
+
+    <div
+      class="admin-only grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10"
+    >
+
+      <!-- CREATE PROJECT -->
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-2xl font-bold mb-6">
+          Create Project
+        </h2>
+
+        <input
+          type="text"
+          id="projectTitle"
+          placeholder="Project Title"
+          class="w-full border p-3 rounded-lg mb-4"
+        />
+
+        <textarea
+          id="projectDescription"
+          placeholder="Project Description"
+          class="w-full border p-3 rounded-lg mb-4"
+        ></textarea>
+
+        <button
+          onclick="createProject()"
+          class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg w-full"
+        >
+          Create Project
+        </button>
+
+      </div>
+
+      <!-- CREATE TASK -->
+
+      <div class="bg-white rounded-2xl shadow p-6">
+
+        <h2 class="text-2xl font-bold mb-6">
+          Create Task
+        </h2>
+
+        <input
+          type="text"
+          id="taskTitle"
+          placeholder="Task Title"
+          class="w-full border p-3 rounded-lg mb-4"
+        />
+
+        <textarea
+          id="taskDescription"
+          placeholder="Task Description"
+          class="w-full border p-3 rounded-lg mb-4"
+        ></textarea>
+
+        <label class="font-semibold block mb-2">
+          Assign To Member
+        </label>
+
+        <select
+          id="taskAssignedUser"
+          class="w-full border p-3 rounded-lg mb-4"
+        ></select>
+
+        <label class="font-semibold block mb-2">
+          Select Project
+        </label>
+
+        <select
+          id="taskProject"
+          class="w-full border p-3 rounded-lg mb-4"
+        ></select>
+
+        <select
+          id="taskPriority"
+          class="w-full border p-3 rounded-lg mb-4"
+        >
+          <option value="Low">Low Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="High">High Priority</option>
+        </select>
+
+        <input
+          type="date"
+          id="taskDueDate"
+          class="w-full border p-3 rounded-lg mb-4"
+        />
+
+        <button
+          onclick="createTask()"
+          class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg w-full"
+        >
+          Create Task
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- MEMBERS -->
+
+    <div class="admin-only mb-12">
+
+      <h2 class="text-3xl font-bold mb-6">
+        Team Members
+      </h2>
+
+      <div
+        id="memberList"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      ></div>
+
+    </div>
+<!-- MEMBER TASK VIEW -->
+
+<div
+  id="memberTasksSection"
+  class="admin-only mb-12 hidden"
+>
+
+  <div class="flex justify-between items-center mb-6">
+
+    <h2 class="text-3xl font-bold">
+      Member Tasks
+    </h2>
+
+    <button
+      onclick="closeMemberTasks()"
+      class="bg-red-500 text-white px-5 py-2 rounded-lg"
+    >
+      Close
+    </button>
+
+  </div>
+
+  <div
+    id="memberTasksContainer"
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+  ></div>
+
+</div>
+    <!-- PROJECTS -->
+
+    <div id="projectsSection" class="mb-12">
+
+      <h2 class="text-3xl font-bold mb-6">
+        Projects & Team Management
+      </h2>
+
+      <div
+        id="projectList"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      ></div>
+
+    </div>
+
+    <!-- TASKS -->
+
+    <div>
+
+      <h2 class="text-3xl font-bold mb-6">
+        Task Tracking
+      </h2>
+
+      <div
+        id="taskList"
+        class="space-y-5"
+      ></div>
+
+    </div>
+
+  </div>
+
+  <script src="./js/dashboard.js"></script>
+
+</body>
+</html>
